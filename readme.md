@@ -1,5 +1,4 @@
 # Notification
-![Notification Project](./index.png)
 
 项目消息通知管理系统，支持 Coding、GitHub 提交记录、Sentry 报警消息输出到Teambition 讨论组或者以邮件的方式发送给项目干系人，Sentry 的报警可以自动创建 Teambition Bug 任务指派给指定任务人。
 
