@@ -1,0 +1,143 @@
+<?php
+
+namespace App\Admin\Controllers;
+
+use App\Http\Controllers\Controller;
+use Encore\Admin\Controllers\ModelForm;
+use Encore\Admin\Auth\Database\Administrator;
+use Encore\Admin\Auth\Database\Permission;
+use Encore\Admin\Auth\Database\Role;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Form;
+use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
+
+class UsersController extends Controller
+{
+    use ModelForm;
+
+    /**
+     * Index interface.
+     *
+     * @return Content
+     */
+    public function index()
+    {    	
+        return Admin::content(function (Content $content) {
+            $content->header('用户');
+            $content->description(trans('admin::lang.list'));
+            $content->body($this->grid()->render());
+        });
+    }
+
+    /**
+     * Edit interface.
+     *
+     * @param $id
+     *
+     * @return Content
+     */
+    public function edit($id)
+    {
+        return Admin::content(function (Content $content) use ($id) {
+            $content->header('用户');
+            $content->description(trans('admin::lang.edit'));
+            $content->body($this->form()->edit($id));
+        });
+    }
+
+    /**
+     * Create interface.
+     *
+     * @return Content
+     */
+    public function create()
+    {
+        return Admin::content(function (Content $content) {
+            $content->header('用户');
+            $content->description(trans('admin::lang.create'));
+            $content->body($this->form());
+        });
+    }
+
+    /**
+     * Make a grid builder.
+     *
+     * @return Grid
+     */
+    protected function grid()
+    {
+        return Administrator::grid(function (Grid $grid) {
+            $user_role = Admin::user()->isAdministrator();
+            if(!$user_role)
+                $grid->model()->where('pid', Admin::user()->id);
+            
+            $grid->id('ID')->sortable();
+            $grid->username(trans('admin::lang.username'));
+            $grid->name(trans('admin::lang.name'));
+            $grid->email('Email');
+            if($user_role){
+                $grid->roles(trans('admin::lang.roles'))->pluck('name')->label();
+            }
+            $grid->created_at(trans('admin::lang.created_at'));
+
+            $grid->actions(function (Grid\Displayers\Actions $actions) {
+                if ($actions->getKey() == 1) {
+                    $actions->disableDelete();
+                }
+            });
+            $grid->filter(function ($filter) {
+                $filter->disableIdFilter();
+                $filter->like('name', 'Name');
+            });
+            $grid->tools(function (Grid\Tools $tools) {
+                $tools->batch(function (Grid\Tools\BatchActions $actions) {
+                    $actions->disableDelete();
+                });
+            });
+
+            $grid->disableExport();
+        });
+    }
+
+    /**
+     * Make a form builder.
+     *
+     * @return Form
+     */
+    public function form()
+    {
+        return Administrator::form(function (Form $form) {
+            $user_role = Admin::user()->isAdministrator();
+            $form->display('id', 'ID');
+            // dd(Admin::user()->id);
+            $form->hidden('pid')->value(Admin::user()->id);
+
+            $form->text('username', trans('admin::lang.username'))->rules('required|min:5|max:30');
+            $form->text('name', trans('admin::lang.name'))->rules('required|min:2|max:15');
+            $form->email('email', 'Email')->rules('required');
+            if ($user_role) {                
+                $form->image('avatar', trans('admin::lang.avatar'));
+                $form->password('password', trans('admin::lang.password'))->rules('required|confirmed');
+                $form->password('password_confirmation', trans('admin::lang.password_confirmation'))->rules('required')
+                    ->default(function ($form) {
+                        return $form->model()->password;
+                    });
+
+                $form->ignore(['password_confirmation']);
+
+                $form->multipleSelect('roles', trans('admin::lang.roles'))->options(Role::all()->pluck('name', 'id'));
+                $form->multipleSelect('permissions', trans('admin::lang.permissions'))->options(Permission::all()->pluck('name', 'id'));
+
+                $form->display('created_at', trans('admin::lang.created_at'));
+                $form->display('updated_at', trans('admin::lang.updated_at'));
+            }
+
+            $form->saving(function (Form $form) {
+                if ($form->password && $form->model()->password != $form->password) {
+                    $form->password = bcrypt($form->password);
+                }
+            });
+        });
+    }
+}

@@ -1,0 +1,14 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+.table>tbody>tr>td>pre{
+	max-height: 100px;
+	max-width: 750px;
+}
