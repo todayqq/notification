@@ -34,4 +34,8 @@ Route::group([
 
     $router->get('getTaskList/{pid}/{id}', 'TeambitionController@getTaskList');
     $router->get('getPerson/{pid}/{id}', 'TeambitionController@getPerson');
+
+    //log
+    $router->get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
 });

@@ -178,6 +178,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         Encore\Admin\Providers\AdminServiceProvider::class,
         Orangehill\Iseed\IseedServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 
     ],
 
@@ -227,6 +230,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
 
     ],
 

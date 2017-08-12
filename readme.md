@@ -1,8 +1,32 @@
 # Notification
 
-## 项目概述
+项目消息通知管理系统，支持 Coding、GitHub 提交记录、Sentry 报警消息输出到Teambition 讨论组或者以邮件的方式发送给项目干系人，Sentry 的报警可以自动创建 Teambition Bug 任务指派给指定任务人。
 
-项目消息通知管理工具，支持 Coding GitHub push记录、Sentry 报警消息输出到企业微信，Teambition 讨论组或者以邮件的方式发送给项目干系人。
+地址： http://notification.yousails-project.com/
+
+如有发现 Bug 或者有更好的建议，发送邮件至 angkee@qq.com
+
+# 特点
+- Coding、Github、Sentry 等第三方平台消息的接入
+- Teambition Oauths 授权，讨论组消息推送
+- Teambition Bug 任务自动创建，并指派给相关任务人
+- email 通知
+- 支持用户以及权限管理
+
+#
+## 流程图
+
+![Notification 流程图](./Notification.png)
+
+## 扩展包依赖
+
+| 扩展包 | 一句话描述 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| [spatie/laravel-backup](https://github.com/z-song/laravel-admin.git)| Laravel-admin 管理后台 |
+| [spatie/laravel-admin](https://github.com/spatie/laravel-backup.git)| 数据库备份 |
+| [orangehill/iseed](https://github.com/orangehill/iseed)| 将数据表里的数据以 seed 的方式导出 |
+| [rap2hpoutre/laravel-logviewer](https://github.com/rap2hpoutre/laravel-log-viewer)| Log 查看工具 |
+| [getsentry/sentry-laravel](https://github.com/getsentry/sentry-laravel)| Sentry 错误报警 |
 
 ## 环境介绍
 
