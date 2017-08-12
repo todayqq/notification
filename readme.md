@@ -1,4 +1,5 @@
 # Notification
+![Notification Project](./index.png)
 
 项目消息通知管理系统，支持 Coding、GitHub 提交记录、Sentry 报警消息输出到Teambition 讨论组或者以邮件的方式发送给项目干系人，Sentry 的报警可以自动创建 Teambition Bug 任务指派给指定任务人。
 
@@ -6,22 +7,21 @@
 
 如有发现 Bug 或者有更好的建议，发送邮件至 angkee@qq.com
 
-# 特点
-- Coding、Github、Sentry 等第三方平台消息的接入
-- Teambition Oauths 授权，讨论组消息推送
+## 特点
+- Coding、GitHub、Sentry 等第三方平台消息的接入
+- Teambition Oauth 授权，讨论组消息推送
 - Teambition Bug 任务自动创建，并指派给相关任务人
 - email 通知
 - 支持用户以及权限管理
 
-#
-## 流程图
+### 流程图
 
 ![Notification 流程图](./Notification.png)
 
 ## 扩展包依赖
 
 | 扩展包 | 一句话描述 |
-| --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | 
 | [spatie/laravel-backup](https://github.com/z-song/laravel-admin.git)| Laravel-admin 管理后台 |
 | [spatie/laravel-admin](https://github.com/spatie/laravel-backup.git)| 数据库备份 |
 | [orangehill/iseed](https://github.com/orangehill/iseed)| 将数据表里的数据以 seed 的方式导出 |
@@ -113,6 +113,7 @@ TBAPP_SECRET=
 在 Homestead 的网站根目录下运行以下命令
 
 ```shell
+php artisan admin:install
 php artisan migrate --seed
 ```
 6. 配置 hosts 文件
