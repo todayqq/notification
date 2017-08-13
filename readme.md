@@ -4,6 +4,8 @@
 
 地址： http://notification.yousails-project.com/
 
+使用文档：https://todayqq.gitbooks.io/notification/content/
+
 如有发现 Bug 或者有更好的建议，发送邮件至 angkee@qq.com
 
 ## 特点

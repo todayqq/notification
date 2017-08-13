@@ -34,10 +34,10 @@
 
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Coding WebHook</label>
-                  <div class="col-sm-7">
-                    <span class="form-control">{{ 'http://' . $_SERVER['HTTP_HOST'] . '/webhook/'. $project->webhook . '?info=coding' }}</span> 
+                  <div class="col-sm-8">
+                    <span class="form-control" style="overflow: hidden;">{{ 'http://' . $_SERVER['HTTP_HOST'] . '/webhook/'. $project->webhook . '?info=coding' }}</span> 
                     <span class="help-block">
-                        <i class="fa fa-info-circle"></i>&nbsp; 查看如何配置 <a href="#" target="_blank">Coding WebHook</a>
+                        <i class="fa fa-info-circle"></i>&nbsp; 查看如何配置 <a href="https://todayqq.gitbooks.io/notification/content/coding-webhook.html" target="_blank">Coding WebHook</a>
                     </span>
                  </div>
                  <!-- <div class="col-sm-4">
@@ -47,10 +47,10 @@
 
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">GitHub WebHook</label>
-                  <div class="col-sm-7">
-                    <span class="form-control">{{ 'http://' . $_SERVER['HTTP_HOST'] . '/webhook/'. $project->webhook . '?info=github' }}</span> 
+                  <div class="col-sm-8">
+                    <span class="form-control" style="overflow: hidden;">{{ 'http://' . $_SERVER['HTTP_HOST'] . '/webhook/'. $project->webhook . '?info=github' }}</span> 
                     <span class="help-block">
-                        <i class="fa fa-info-circle"></i>&nbsp; 查看如何配置 <a href="#" target="_blank">GitHub WebHook</a>
+                        <i class="fa fa-info-circle"></i>&nbsp; 查看如何配置 <a href="https://todayqq.gitbooks.io/notification/content/github-webhook.html" target="_blank">GitHub WebHook</a>
                     </span>
                  </div>
                  <!-- <div class="col-sm-4">
@@ -61,11 +61,11 @@
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Sentry WebHook</label>
 
-                  <div class="col-sm-7">
-                    <span class="form-control">{{ 'http://' . $_SERVER['HTTP_HOST'] . '/webhook/'. $project->webhook . '?info=sentry' }}</span> 
+                  <div class="col-sm-8">
+                    <span class="form-control" style="overflow: hidden;">{{ 'http://' . $_SERVER['HTTP_HOST'] . '/webhook/'. $project->webhook . '?info=sentry' }}</span> 
 
                     <span class="help-block">
-                        <i class="fa fa-info-circle"></i>&nbsp; 查看如何配置 <a href="#" target="_blank">Sentry WebHook</a>
+                        <i class="fa fa-info-circle"></i>&nbsp; 查看如何配置 <a href="https://todayqq.gitbooks.io/notification/content/sentry-webhook.html" target="_blank">Sentry WebHook</a>
                     </span>
                   </div>
                  <!--  <div class="col-sm-4">
