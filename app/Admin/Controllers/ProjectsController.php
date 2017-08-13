@@ -104,6 +104,7 @@ class ProjectsController extends Controller
             $grid->id('ID')->sortable();
             $grid->column('name');
             $grid->description()->display(function($text) {
+                if (null == $text) return '';
                 return str_limit($text, 30, '...');
             });
 
