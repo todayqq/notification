@@ -43,7 +43,7 @@ class HomeController extends Controller
 
             $headers = ['Id', 'Name', 'Info', 'Content', 'Created_at'];
             foreach ($rows as &$row) {
-                $row->content = str_limit($row->content, 100, '...');
+                $row['content'] = str_limit($row['content'], 100, '...');
             }
             $content->row((new Box('最新通知 Log', new Table($headers, $rows)))->style('info')->solid());
         });

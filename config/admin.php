@@ -53,7 +53,7 @@ return [
             'file'   => 'file',
         ],
 
-        'host' => url('upload'),
+        'host' => public_path('upload'),
     ],
 
     /*

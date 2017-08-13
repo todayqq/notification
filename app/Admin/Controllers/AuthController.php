@@ -102,7 +102,7 @@ class AuthController extends Controller
 
     protected function sendEmailConfirmationTo($user)
     {
-        $view = 'emails.confirm';
+        $view = 'emails.register';
         $data = compact('user');
         $to = $user->email;
         $subject = "感谢注册 Notification 应用！请确认你的邮箱。";

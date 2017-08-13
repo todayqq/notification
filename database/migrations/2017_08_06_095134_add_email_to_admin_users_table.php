@@ -14,7 +14,8 @@ class AddEmailToAdminUsersTable extends Migration
     public function up()
     {
         Schema::table('admin_users', function (Blueprint $table) {
-            // $table->string('name')->nullable()->change();
+            $table->string('name')->nullable()->change();
+            $table->string('password')->nullable()->change();
             if (!Schema::hasColumn('admin_users', 'email')) {
                 $table->string('email')->nullable();
             }

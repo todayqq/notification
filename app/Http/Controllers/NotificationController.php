@@ -9,6 +9,7 @@ use App\Models\NotificationLogs;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Encore\Admin\Facades\Admin;
+use App\Models\AdminUsers;
 
 class NotificationController extends Controller
 {
