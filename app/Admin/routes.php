@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Routing\Router;
+use App\Http\Middleware\CheckPermission;
 
 Admin::registerHelpersRoutes();
 
@@ -15,14 +16,17 @@ Route::group([
     $router->post('auth/register', 'AuthController@postRegister');
     $router->get('register/confirm/{token}', 'AuthController@confirmEmail')->name('confirm_email');
 
-
     $router->get('/', 'HomeController@index');
-    $router->resource('auth/users', 'UsersController');
 
-    $router->resource('projects', ProjectsController::class);
-    $router->get('projects/{id}/setting', 'ProjectsController@showSettingView');
-    $router->post('projects/{id}/setting', 'ProjectsController@setting');
-    $router->post('projects/{id}/notification/{type}', 'ProjectsController@notification');
+    $router->get('projects', 'ProjectsController@index');
+    $router->get('projects/create', 'ProjectsController@create');
+    $router->post('projects', 'ProjectsController@store');
+    $router->get('projects/{id}/edit', 'ProjectsController@edit')->middleware(CheckPermission::class);
+    $router->put('projects/{id}', 'ProjectsController@update')->middleware(CheckPermission::class);
+    $router->delete('projects/{id}', 'ProjectsController@destroy')->middleware(CheckPermission::class);
+    $router->get('projects/{id}/setting', 'ProjectsController@showSettingView')->middleware(CheckPermission::class);
+    $router->post('projects/{id}/setting', 'ProjectsController@setting')->middleware(CheckPermission::class);
+    // $router->post('projects/{id}/notification/{type}', 'ProjectsController@notification');
 
     $router->get('notificationlogs', 'NotificationLogsController@index');
 
@@ -34,6 +38,8 @@ Route::group([
 
     $router->get('getTaskList/{pid}/{id}', 'TeambitionController@getTaskList');
     $router->get('getPerson/{pid}/{id}', 'TeambitionController@getPerson');
+
+    $router->resource('auth/users', 'UsersController');
 
     //log
     $router->get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
