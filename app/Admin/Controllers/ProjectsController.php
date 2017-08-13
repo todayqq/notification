@@ -142,9 +142,18 @@ class ProjectsController extends Controller
         );
 
         $tbProjectList = getTbProjectList($tbToken);
-        $userEmails = DB::table('admin_users')->select('id', 'email')->get();
-        $tb_pid = $project->tb_pid;
+        if(!Admin::user()->isAdministrator()){
+            $userEmails = DB::table('admin_users')->select('id', 'email')->where('pid', Admin::user()->id)->get()->toArray();
+            $userEmails[] = (object)[
+                "id" => Admin::user()->id,
+                "email" => Admin::user()->email 
+            ];
+            // dd($userEmails);
+        } else {
+            $userEmails = DB::table('admin_users')->select('id', 'email')->get();
+        }
 
+        $tb_pid = $project->tb_pid;
         
         if ($tb_pid && null != $tbToken['access_token']) {
             $tbTasklist = getTbTaskList($tb_pid, $tbToken);

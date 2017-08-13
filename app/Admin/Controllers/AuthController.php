@@ -93,7 +93,7 @@ class AuthController extends Controller
                 'user_id' => $user->id
             ]);
             $this->sendEmailConfirmationTo($user);
-            admin_toastr('验证邮件已发送到你的注册邮箱上，请注意查收。');
+            admin_toastr('注册成功，验证邮件已发送到你的注册邮箱上，请注意查收。');
         } else {
             admin_toastr('操作失败，请稍后再试', 'warning');
         }

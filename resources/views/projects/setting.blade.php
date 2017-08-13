@@ -108,7 +108,7 @@
                   </div>
                 </div>
 
-                @if(null != $tbToken)
+                @if(null != $tbToken['access_token'])
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Teambition 项目</label>
                   <div class="col-sm-10">
