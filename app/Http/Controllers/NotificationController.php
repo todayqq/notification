@@ -41,8 +41,8 @@ class NotificationController extends Controller
     {
         foreach ($email_userids as $email_userid) {
             $title = 'Notification';
-            $user = DB::table('admin_users')->select('email')->find(2);
-            if ($email = $user->email) {
+            $email = DB::table('admin_users')->select('email')->find($email_userid)->value('email');
+            if ($email) {
                 Mail::raw($msg, function ($m) use($email, $title) {
                     $m->subject($title);
                     $m->to($email);
