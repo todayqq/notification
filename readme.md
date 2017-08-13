@@ -46,7 +46,7 @@
 
 将源代码克隆到 `notification` 文件夹下
 
-> git clone git@git.coding.net:yousails/notification.git
+> git clone https://github.com/todayqq/notification.git
 
 2. 配置本地的 Homestead 环境
 
