@@ -23,8 +23,8 @@
 
 | 扩展包 | 一句话描述 |
 | --- | --- | 
-| [spatie/laravel-backup](https://github.com/z-song/laravel-admin.git)| Laravel-admin 管理后台 |
-| [spatie/laravel-admin](https://github.com/spatie/laravel-backup.git)| 数据库备份 |
+| [spatie/laravel-admin](https://github.com/z-song/laravel-admin.git)| Laravel-admin 管理后台 |
+| [spatie/laravel-backup](https://github.com/spatie/laravel-backup.git)| 数据库备份 |
 | [orangehill/iseed](https://github.com/orangehill/iseed)| 将数据表里的数据以 seed 的方式导出 |
 | [rap2hpoutre/laravel-logviewer](https://github.com/rap2hpoutre/laravel-log-viewer)| Log 查看工具 |
 | [getsentry/sentry-laravel](https://github.com/getsentry/sentry-laravel)| Sentry 错误报警 |
