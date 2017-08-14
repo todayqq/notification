@@ -168,7 +168,7 @@ class ProjectsController extends Controller
     {
         $project = Projects::findOrFail($id); 
         $content = $request->all();
-        if(isset($content['coding_msg_status'])) {
+        if(isset($content['tb_pid']) && isset($content['coding_msg_status'])) {
             $tbToken = array(
                 'access_token' => getTbToken($project)
             );

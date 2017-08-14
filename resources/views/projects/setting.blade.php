@@ -113,7 +113,7 @@
                   <label for="inputEmail3" class="col-sm-2 control-label">Teambition 项目</label>
                   <div class="col-sm-10">
                     <select class="form-control select2" id="tb_projectlist" style="width: 100%;" name="tb_pid">
-                      <option></option>
+                      <option value=""></option>
                       @foreach($tbProjectList as $tbProject)
                         <option value="{{ $tbProject->_id }}" 
                           @if($project->tb_pid == $tbProject->_id)
@@ -156,7 +156,7 @@
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Teambition 任务分组</label>
                   <div class="col-sm-10">
-                    <select class="form-control" style="width: 100%;" id="tb_tasklist" name="tb_tasklistid">
+                    <select class="form-control select2" style="width: 100%;" id="tb_tasklist" name="tb_tasklistid">
                       @if(isset($tbTasklist))
                         @foreach($tbTasklist as $tbTask)
                           <option value="{{ $tbTask->_id }}"
@@ -176,7 +176,7 @@
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Teambition 任务阶段</label>
                   <div class="col-sm-10">
-                    <select class="form-control" style="width: 100%;" id="tb_stage" name="tb_stageid">
+                    <select class="form-control select2" style="width: 100%;" id="tb_stage" name="tb_stageid">
                       @if(isset($tbStages))
                         @foreach($tbStages as $tbStage)
                           <option value="{{ $tbStage->_id }}"
@@ -193,7 +193,7 @@
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Teambition 任务指派人</label>
                   <div class="col-sm-10">
-                    <select class="form-control" style="width: 100%;" id="tb_executor" name="tb_executorid">
+                    <select class="form-control select2" style="width: 100%;" id="tb_executor" name="tb_executorid">
                       @if(isset($tbPerson))
                         @foreach($tbPerson as $tbP)
                           <option value="{{ $tbP->_id }}"
