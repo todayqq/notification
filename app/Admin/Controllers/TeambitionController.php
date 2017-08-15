@@ -4,26 +4,25 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
-use App\Models\Projects;
+use Illuminate\Http\Request;
 
 class TeambitionController extends Controller
 {
     use ModelForm;
 
-    public function getTaskList($pid, $project_id)
+    public function getTaskList($project_id, Request $request)
     {
     	$tbToken = array(
-            'access_token' => getTbToken(Projects::findOrfail($pid))
+            'access_token' => $request->token
         );
-    	return getTbTaskList($project_id, $tbToken);
+    	return getTeambitionTaskList($project_id, $tbToken);
     }
 
-    public function getPerson($pid, $project_id)
+    public function getPerson($project_id, Request $request)
     {
     	$tbToken = array(
-            'access_token' => getTbToken(Projects::findOrfail($pid))
+            'access_token' => $request->token
         );
-    	return getTbPerson($project_id, $tbToken);
+    	return getTeambitionPerson($project_id, $tbToken);
     }
-
 }

@@ -15,15 +15,15 @@
 - email 通知
 - 支持用户以及权限管理
 
-### 流程图
+### 流程示意图
 
-![Notification 流程图](./Notification.png)
+![Notification 流程示意图](./Notification.png)
 
 ## 扩展包依赖
 
 | 扩展包 | 一句话描述 |
 | --- | --- | 
-| [spatie/laravel-admin](https://github.com/z-song/laravel-admin.git)| Laravel-admin 管理后台 |
+| [z-song/laravel-admin](https://github.com/z-song/laravel-admin.git)| Laravel-admin 管理后台 |
 | [spatie/laravel-backup](https://github.com/spatie/laravel-backup.git)| 数据库备份 |
 | [orangehill/iseed](https://github.com/orangehill/iseed)| 将数据表里的数据以 seed 的方式导出 |
 | [rap2hpoutre/laravel-logviewer](https://github.com/rap2hpoutre/laravel-log-viewer)| Log 查看工具 |

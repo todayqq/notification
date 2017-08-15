@@ -34,7 +34,7 @@ class OauthsController extends Controller
     {
         $oauth = Oauths::findOrfail($id);
         if ('Teambition' == $oauth->name) {
-            return $this->jumpTbAuthUrl();
+            return $this->jumpTeambitionAuthUrl();
         } else {
             admin_toastr('暂未接入，敬请期待');
             return redirect('oauths');
@@ -51,7 +51,7 @@ class OauthsController extends Controller
         return $this->index();
     }
 
-    public function jumpTbAuthUrl()
+    public function jumpTeambitionAuthUrl()
     {
     	$params = array(
             'client_id' => config('services.teambition.app_key'),
@@ -88,17 +88,5 @@ class OauthsController extends Controller
         } else
             admin_toastr('授权失败');    	
     	return redirect('oauths');
-    }
-
-    public function jumpGitAuthUrl()
-    {
-        admin_toastr('暂未接入，敬请期待');
-        return back();
-    }
-    
-    public function jumpCWAuthUrl()
-    {
-    	admin_toastr('暂未接入，敬请期待');
-        return back();
     }
 }

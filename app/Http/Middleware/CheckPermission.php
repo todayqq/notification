@@ -17,10 +17,12 @@ class CheckPermission
      */
     public function handle($request, Closure $next)
     {
-        $project = Projects::findOrfail($request->id);
-        if(!Admin::user()->isAdministrator() && $project->user_id != Admin::user()->id)
-            return redirect('/');
-
+        if (!Admin::user()->isAdministrator()) {
+            $project = Projects::findOrfail($request->route('project'));
+            if($project->user_id != Admin::user()->id) {
+                return redirect('/');
+            }
+        }
         return $next($request);
     }
 }

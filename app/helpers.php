@@ -1,17 +1,6 @@
 <?php
 use Illuminate\Support\Facades\DB;
 
-if (!function_exists('tb_auth')) {
-	function tb_auth() {
-		$params = array(
-            'client_id' => config('services.teambition.app_key'),
-            'redirect_uri' => url('test/oauth')
-        );
-        $get_code_url = config('services.teambition.auth_domain') . "/oauth2/authorize?" . http_build_query($params);
-        return redirect($get_code_url);
-	}	
-}
-
 if (!function_exists('curl_post')) {
 	function curl_post($url, $params, $header=false) {
 		$ch = curl_init();
@@ -33,8 +22,8 @@ if (!function_exists('curl_post')) {
 }
 
 
-if (!function_exists('getTbProjectList')) {
-	function getTbProjectList($token) {
+if (!function_exists('getTeambitionProjectList')) {
+	function getTeambitionProjectList($token) {
         $url = config('services.teambition.api_domain') . '/api/projects/?'.http_build_query($token);
         $result = file_get_contents($url);
         $jsonResult = json_decode($result);
@@ -43,8 +32,8 @@ if (!function_exists('getTbProjectList')) {
     }
 }
 
-if (!function_exists('getTbTaskList')) {
-	function getTbTaskList($project_id, $token) {
+if (!function_exists('getTeambitionTaskList')) {
+	function getTeambitionTaskList($project_id, $token) {
         $url = config('services.teambition.api_domain') . "/api/projects/{$project_id}/tasklists?".http_build_query($token);
         $result = file_get_contents($url);
         $jsonResult = json_decode($result);
@@ -53,8 +42,8 @@ if (!function_exists('getTbTaskList')) {
     }
 }
 
-if (!function_exists('getTbPerson')) {
-	function getTbPerson($project_id, $token) {
+if (!function_exists('getTeambitionPerson')) {
+	function getTeambitionPerson($project_id, $token) {
         $url = config('services.teambition.api_domain') . "/api/v2/projects/{$project_id}/members?". http_build_query($token);
         $result = file_get_contents($url);
         $jsonResult = json_decode($result);
@@ -63,8 +52,8 @@ if (!function_exists('getTbPerson')) {
     }
 }
 
-if (!function_exists('getTbProjectRoom')) {
-	function getTbProjectRoom($project_id, $token) {
+if (!function_exists('getTeambitionProjectRoom')) {
+	function getTeambitionProjectRoom($project_id, $token) {
         $url = config('services.teambition.api_domain') . "/api/rooms/projects/{$project_id}?". http_build_query($token);
         $result = file_get_contents($url);
         $jsonResult = json_decode($result);
@@ -73,8 +62,8 @@ if (!function_exists('getTbProjectRoom')) {
     }
 }
 
-if (!function_exists('SendTbRoomMsg')) {
-    function SendTbRoomMsg($params, $token) {
+if (!function_exists('SendTeambitionRoomMessage')) {
+    function SendTeambitionRoomMessage($params, $token) {
         $url = config('services.teambition.api_domain') . "/api/rooms/{$params['_id']}/activities";
         $header[] = "Authorization: OAuth2 " . $token;            
         $result = curl_post($url, $params, $header);
@@ -83,8 +72,8 @@ if (!function_exists('SendTbRoomMsg')) {
     }
 }
 
-if (!function_exists('getTbToken')) {
-    function getTbToken($project) {
+if (!function_exists('getTeambitionToken')) {
+    function getTeambitionToken($project) {
         return DB::table('user_oauths')->where('user_id', $project->user_id)->where('oauth_id', 1)->value('token');
     }
 }

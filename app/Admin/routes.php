@@ -18,15 +18,9 @@ Route::group([
 
     $router->get('/', 'HomeController@index');
 
-    $router->get('projects', 'ProjectsController@index');
-    $router->get('projects/create', 'ProjectsController@create');
-    $router->post('projects', 'ProjectsController@store');
-    $router->get('projects/{id}/edit', 'ProjectsController@edit')->middleware(CheckPermission::class);
-    $router->put('projects/{id}', 'ProjectsController@update')->middleware(CheckPermission::class);
-    $router->delete('projects/{id}', 'ProjectsController@destroy')->middleware(CheckPermission::class);
-    $router->get('projects/{id}/setting', 'ProjectsController@showSettingView')->middleware(CheckPermission::class);
-    $router->post('projects/{id}/setting', 'ProjectsController@setting')->middleware(CheckPermission::class);
-    // $router->post('projects/{id}/notification/{type}', 'ProjectsController@notification');
+    $router->resource('projects', 'ProjectsController');
+    $router->get('projects/{project}/setting', 'ProjectsController@showSettingView');
+    $router->post('projects/{project}/setting', 'ProjectsController@setting');
 
     $router->get('notificationlogs', 'NotificationLogsController@index');
 
@@ -36,8 +30,8 @@ Route::group([
     $router->get('unoauths/{id}', 'OauthsController@unoauth');
     $router->get('oauth', 'OauthsController@authTeambition');
 
-    $router->get('getTaskList/{pid}/{id}', 'TeambitionController@getTaskList');
-    $router->get('getPerson/{pid}/{id}', 'TeambitionController@getPerson');
+    $router->get('teambition/{teambition_project_id}/getTaskList', 'TeambitionController@getTaskList');
+    $router->get('teambition/{teambition_project_id}/getPerson', 'TeambitionController@getPerson');
 
     $router->resource('auth/users', 'UsersController');
 

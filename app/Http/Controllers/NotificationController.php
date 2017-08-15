@@ -15,10 +15,11 @@ class NotificationController extends Controller
 {
     public function listenWebhook($webhook, Request $request)
     {
-    	Log::info($request->all());
+    	// Log::info($request->all());
         $project = Projects::where('webhook', $webhook)->first();
-        if (!$project) 
+        if (!$project) {
             return response('未授权', 403);
+        }
 
         NotificationLogs::create([
             'pid' => $project->id,
@@ -29,15 +30,16 @@ class NotificationController extends Controller
 
         if ('coding' == $request->info) {
             if ($project && $project->coding_msg_status) {
-                return $this->sendCodingMsg($project, $request->all());
+                return $this->sendCodingMessage($project, $request->all());
             }
-        } else if ('sentry' == $request->info && $project->tb_pid && $project->tb_tasklistid)
-    	    return $this->createTask($project, $request->all());
-        else if ('github' == $request->info)
-            return $this->sendGithubMsg($project, $request->all());
+        } else if ('sentry' == $request->info && $project->tb_pid && $project->tb_tasklistid) {
+    	    return $this->createTeambitionTask($project, $request->all());
+        } else if ('github' == $request->info) {
+            return $this->sendGithubMessage($project, $request->all());
+        }
     }
 
-    protected function sendEmails($email_userids, $msg)
+    protected function sendMessageEmail($email_userids, $msg)
     {
         foreach ($email_userids as $user_id) {
             $title = 'Notification';
@@ -51,7 +53,7 @@ class NotificationController extends Controller
         }
     }
 
-    protected function sendCodingMsg($project, $message)
+    protected function sendCodingMessage($project, $message)
     {
         if (!isset($message['commits'])) {
             return response('success', 200);
@@ -63,28 +65,28 @@ User: {$message['user']['name']},
 event: {$message['event']},
 Description: {$message['commits'][0]['short_message']}";        
         if ($project->email_status && 0 != count($project->send_email_users)) {
-            $this->sendEmails($project->send_email_users, $msg);
+            $this->sendMessageEmail($project->send_email_users, $msg);
         }
 
         $params = array(
             '_id' => $project->tb_roomid,
             'content' => $msg
         );
-        return SendTbRoomMsg($params, getTbToken($project));
+        return SendTeambitionRoomMessage($params, getTeambitionToken($project));
     }
 
-    protected function sendGithubMsg($project, $message)
+    protected function sendGithubMessage($project, $message)
     {
         $content = json_decode($message['payload']);
-        $m = $content->commits[0];
+        $commits = $content->commits[0];
 
         $msg = "GitHub 提交信息
 项目: {$project->name},
-用户: {$m->author->name},
+用户: {$commits->author->name},
 提交分支: {$content->ref},
-提交时间: {$m->timestamp},
-修改信息: {$m->message},
-详情连接: {$m->url}";
+提交时间: {$commits->timestamp},
+修改信息: {$commits->message},
+详情连接: {$commits->url}";
 
         if ($project->email_status && 0 != count($project->send_email_users)) {
             $this->sendEmails($project->send_email_users, $msg);
@@ -94,11 +96,11 @@ Description: {$message['commits'][0]['short_message']}";
             '_id' => $project->tb_roomid,
             'content' => $msg
         );
-        $re = SendTbRoomMsg($params, getTbToken($project));
-        Log::info('GitHub 消息推送结果：' . $re);
+        $result = SendTeambitionRoomMessage($params, getTeambitionToken($project));
+        Log::info('GitHub 消息推送结果：' . $result);
     }
 
-    protected function createTask($project, $content)
+    protected function createTeambitionTask($project, $content)
     {
         $msg = "Sentry 报警
 项目: {$project->name},
@@ -114,8 +116,8 @@ Description: {$message['commits'][0]['short_message']}";
                 '_id' => $project->tb_roomid,
                 'content' => $msg
             );
-            $re = SendTbRoomMsg($params, getTbToken($project));
-            Log::info('Sentry 消息推送结果：' . $re);
+            $result = SendTeambitionRoomMessage($params, getTeambitionToken($project));
+            Log::info('Sentry 消息推送结果：' . $result);
         }
 
         $params = array(
@@ -128,7 +130,7 @@ Description: {$message['commits'][0]['short_message']}";
         );
         $url = config('services.teambition.api_domain') . '/api/tasks';
 
-        $header[] = "Authorization: OAuth2 " . getTbToken($project); 
+        $header[] = "Authorization: OAuth2 " . getTeambitionToken($project); 
 
         $result = curl_post($url, $params, $header);
         Log::info('Sentry 错误创建 Bug 任务结果：'.$result);

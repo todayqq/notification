@@ -16,6 +16,13 @@ class ProjectsController extends Controller
 {
     use ModelForm;
 
+    public function __construct()
+    {
+        $this->middleware('checkPermission', [            
+            'only' => ['edit', 'destroy', 'showSettingView', 'setting']
+        ]);
+    }
+
     /**
      * Index interface.
      *
@@ -24,10 +31,8 @@ class ProjectsController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
-
             $content->header('项目');
             $content->description('列表');
-
             $content->body($this->grid());
         });
     }
@@ -41,10 +46,8 @@ class ProjectsController extends Controller
     public function edit($id)
     {
         return Admin::content(function (Content $content) use ($id) {
-
             $content->header('项目');
             $content->description('编辑');
-
             $content->body($this->form()->edit($id));
         });
     }
@@ -76,8 +79,10 @@ class ProjectsController extends Controller
         $post['user_id'] = Admin::user()->id;
         if (Projects::create($post)) {
             admin_toastr('操作成功');
-            return redirect('projects');
+        } else {
+            admin_toastr('操作失败，请稍后再试');
         }
+        return redirect('projects');
     }
 
     protected function randString($length) {
@@ -128,7 +133,6 @@ class ProjectsController extends Controller
     protected function form()
     {
         return Admin::form(Projects::class, function (Form $form) {
-
             $form->display('id', 'ID');
             $form->text('name')->rules('required|min:2|max:50');
             $form->textarea('description')->rows(3);
@@ -139,29 +143,31 @@ class ProjectsController extends Controller
     {
         $project = Projects::find((int)$id);
         $tbToken = array(
-            'access_token' => getTbToken($project)
+            'access_token' => getTeambitionToken($project)
         );
-
-        $tbProjectList = getTbProjectList($tbToken);
+        
         if(!Admin::user()->isAdministrator()){
-            $userEmails = DB::table('admin_users')->select('id', 'email')->where('pid', Admin::user()->id)->get()->toArray();
-            $userEmails[] = (object)[
-                "id" => Admin::user()->id,
-                "email" => Admin::user()->email 
-            ];
-            // dd($userEmails);
+            $user_id = Admin::user()->id;
+            $userEmails = DB::table('admin_users')
+                                    ->select('id', 'email')
+                                    ->where('pid', $user_id)
+                                    ->orWhere('id', $user_id)
+                                    ->get()
+                                    ->toArray();
         } else {
             $userEmails = DB::table('admin_users')->select('id', 'email')->get();
         }
 
-        $tb_pid = $project->tb_pid;
-        
-        if ($tb_pid && null != $tbToken['access_token']) {
-            $tbTasklist = getTbTaskList($tb_pid, $tbToken);
-            $tbPerson = getTbPerson($tb_pid, $tbToken);
-            return view('projects.setting', compact('project','tbProjectList', 'tbTasklist', 'tbPerson', 'userEmails', 'tbToken'));
+        $teambitionArr = [];
+        $teambitionArr['token'] = $tbToken;
+        if (null != $tbToken['access_token']) {
+            $teambitionArr['projectList'] = getTeambitionProjectList($tbToken);
+            if ($tb_pid = $project->tb_pid) {
+                $teambitionArr['taskList'] = getTeambitionTaskList($tb_pid, $tbToken);
+                $teambitionArr['person'] = getTeambitionPerson($tb_pid, $tbToken);
+            }
         }
-        return view('projects.setting', compact('project','tbProjectList', 'userEmails', 'tbToken'));
+        return view('projects.setting', compact('project', 'userEmails', 'teambitionArr'));
     }
 
     public function setting($id, Request $request)
@@ -170,9 +176,9 @@ class ProjectsController extends Controller
         $content = $request->all();
         if(isset($content['tb_pid']) && isset($content['coding_msg_status'])) {
             $tbToken = array(
-                'access_token' => getTbToken($project)
+                'access_token' => getTeambitionToken($project)
             );
-            if ($room = getTbProjectRoom($content['tb_pid'], $tbToken)) {
+            if ($room = getTeambitionProjectRoom($content['tb_pid'], $tbToken)) {
                 $content['tb_roomid'] = $room->_id;
             }
         }  
@@ -182,10 +188,5 @@ class ProjectsController extends Controller
         }
         admin_toastr('设置失败');
         return back();
-    }
-
-    public function notification($id, $type)
-    {
-        
     }
 }

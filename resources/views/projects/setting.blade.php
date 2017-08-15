@@ -53,9 +53,6 @@
                         <i class="fa fa-info-circle"></i>&nbsp; 查看如何配置 <a href="https://todayqq.gitbooks.io/notification/content/github-webhook.html" target="_blank">GitHub WebHook</a>
                     </span>
                  </div>
-                 <!-- <div class="col-sm-4">
-                      <button type="button" class="btn btn-info">测试</button>
-                  </div> -->
                 </div>
 
                 <div class="form-group">
@@ -68,9 +65,6 @@
                         <i class="fa fa-info-circle"></i>&nbsp; 查看如何配置 <a href="https://todayqq.gitbooks.io/notification/content/sentry-webhook.html" target="_blank">Sentry WebHook</a>
                     </span>
                   </div>
-                 <!--  <div class="col-sm-4">
-                      <button type="button" class="btn btn-info" onclick="notification({{$project->id}}, 'sentry')">测试</button>
-                  </div> -->
                 </div>
 
                 <div class="form-group">
@@ -108,19 +102,21 @@
                   </div>
                 </div>
 
-                @if(null != $tbToken['access_token'])
+              @if(null != $teambitionArr['token'])
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Teambition 项目</label>
                   <div class="col-sm-10">
                     <select class="form-control select2" id="tb_projectlist" style="width: 100%;" name="tb_pid">
                       <option value=""></option>
-                      @foreach($tbProjectList as $tbProject)
-                        <option value="{{ $tbProject->_id }}" 
-                          @if($project->tb_pid == $tbProject->_id)
-                            selected="selected"
-                          @endif
-                        >{{ $tbProject->name }}</option>
-                      @endforeach
+                      @if(isset($teambitionArr['projectList']))
+                        @foreach($teambitionArr['projectList'] as $tbProject)
+                          <option value="{{ $tbProject->_id }}" 
+                            @if($project->tb_pid == $tbProject->_id)
+                              selected="selected"
+                            @endif
+                          >{{ $tbProject->name }}</option>
+                        @endforeach
+                      @endif
                     </select>
                   </div>
                 </div>
@@ -157,8 +153,8 @@
                   <label for="inputEmail3" class="col-sm-2 control-label">Teambition 任务分组</label>
                   <div class="col-sm-10">
                     <select class="form-control select2" style="width: 100%;" id="tb_tasklist" name="tb_tasklistid">
-                      @if(isset($tbTasklist))
-                        @foreach($tbTasklist as $tbTask)
+                      @if(isset($teambitionArr['taskList']))
+                        @foreach($teambitionArr['taskList'] as $tbTask)
                           <option value="{{ $tbTask->_id }}"
                             @if($project->tb_tasklistid == $tbTask->_id)
                               selected="selected"
@@ -194,13 +190,13 @@
                   <label for="inputEmail3" class="col-sm-2 control-label">Teambition 任务指派人</label>
                   <div class="col-sm-10">
                     <select class="form-control select2" style="width: 100%;" id="tb_executor" name="tb_executorid">
-                      @if(isset($tbPerson))
-                        @foreach($tbPerson as $tbP)
-                          <option value="{{ $tbP->_id }}"
-                            @if($project->tb_executorid == $tbP->_id)
+                      @if(isset($teambitionArr['person']))
+                        @foreach($teambitionArr['person'] as $tbPerson)
+                          <option value="{{ $tbPerson->_id }}"
+                            @if($project->tb_executorid == $tbPerson->_id)
                               selected="selected"
                             @endif
-                          >{{ $tbP->name }}</option>>
+                          >{{ $tbPerson->name }}</option>>
                         @endforeach
                       @endif
                     </select>
@@ -211,20 +207,20 @@
                   <label for="inputEmail3" class="col-sm-2 control-label">Teambition 任务相关人</label>
                   <div class="col-sm-10">
                     <select class="form-control select2" style="width: 100%;" id="tb_person" name="tb_personid[]" multiple="multiple">
-                      @if(isset($tbPerson))
-                        @foreach($tbPerson as $tbP)
-                          <option value="{{ $tbP->_id }}"
-                            @if($project->tb_personid && $tbP->_id && in_array($tbP->_id, $project->tb_personid))
+                      @if(isset($teambitionArr['person']))
+                        @foreach($teambitionArr['person'] as $tbPerson)
+                          <option value="{{ $tbPerson->_id }}"
+                            @if($project->tb_personid && $tbPerson->_id && in_array($tbPerson->_id, $project->tb_personid))
                               selected="selected"
                             @endif
 
-                          >{{ $tbP->name }}</option>>
+                          >{{ $tbPerson->name }}</option>>
                         @endforeach
                       @endif
                     </select>
                   </div>
                 </div>
-                @endif
+              @endif
               </div>
               <div class="box-footer">
                 <button type="submit" class="btn btn-info pull-right">submit</button>
@@ -263,7 +259,10 @@
 
         $('#tb_projectlist').on('change', function () {
             $.ajax({
-                url: "{{ url('getTaskList') }}" + "/{{ $project->id }}/" + $(this).val(),
+                url: "/teambition/" + $(this).val() + "/getTaskList",
+                data: {
+                  'token': "{{ $teambitionArr['token']['access_token'] }}"
+                },
                 success: function(re) {
                     $('#tb_tasklist').empty();
                     for (var i = 0; i < re.length; i++) {
@@ -287,7 +286,10 @@
             }
 
             $.ajax({
-                url: "{{ url('getPerson') }}" + "/{{ $project->id }}/" + $(this).val(),
+                url: "/teambition/" + $(this).val() + "/getPerson",
+                data: {
+                  'token': "{{ $teambitionArr['token']['access_token'] }}"
+                },
                 success: function(re) {
                     $('#tb_executor').empty();
                     for (var i = 0; i < re.length; i++) {
