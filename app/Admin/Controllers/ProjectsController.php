@@ -174,12 +174,14 @@ class ProjectsController extends Controller
     {
         $project = Projects::findOrFail($id); 
         $content = $request->all();
-        if(isset($content['tb_pid']) && isset($content['coding_msg_status'])) {
+        if(isset($content['tb_pid'])) {
             $tbToken = array(
                 'access_token' => getTeambitionToken($project)
             );
-            if ($room = getTeambitionProjectRoom($content['tb_pid'], $tbToken)) {
-                $content['tb_roomid'] = $room->_id;
+            if(isset($content['coding_msg_status']) || isset($content['sentry_msg_status'])){
+                if ($room = getTeambitionProjectRoom($content['tb_pid'], $tbToken)) {
+                    $content['tb_roomid'] = $room->_id;
+                }
             }
         }  
         if ($project->update($content)) {
