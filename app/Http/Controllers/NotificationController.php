@@ -67,7 +67,7 @@ event: {$message['event']},
 ";        
         if (isset($message['commits'][0]['short_message'])) {
             $msg .= "Description: {$message['commits'][0]['short_message']}";
-        }
+        } 
 
         if ($project->email_status && 0 != count($project->send_email_users)) {
             $this->sendMessageEmail($project->send_email_users, $msg);
