@@ -61,9 +61,10 @@ class NotificationController extends Controller
 
         $msg = "Coding 提交信息
 项目: {$project->name},
+分支: {$project->ref},
 User: {$message['user']['name']},
 event: {$message['event']},
-Description: {$message['commits'][0]['short_message']}";        
+Description: {@$message['commits'][0]['short_message']}";        
         if ($project->email_status && 0 != count($project->send_email_users)) {
             $this->sendMessageEmail($project->send_email_users, $msg);
         }
